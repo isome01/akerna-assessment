@@ -6,9 +6,11 @@ import * as styles from './Dashboard.module.css'
 const Dashboard = () => {
   return (
     <div className='row'>
-      <div className={`col-md-4 offset-md-4 ${styles['dashboard']}`}>
+      <div className={`col-md-10 offset-md-1 ${styles['dashboard']}`}>
         <BeverageList />
-        <UserSpecs />
+        <UserSpecs
+          style={{marginTop: 50}}
+        />
       </div>
     </div>
   )

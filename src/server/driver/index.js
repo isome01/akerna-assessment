@@ -1,7 +1,6 @@
-const userAuth = {user: 'dbadmin', pwd: 'M4st3rful3x3cut10n'}
 const mongoDBClient = require('mongodb').MongoClient
 const urlParser = {useNewUrlParser: true}
-const url = `mongodb://admin:admin@localhost:27017`
+const url = 'mongodb://localhost:27017/caffeine_trip'
 
 module.exports = uri => (
   mongoDBClient.connect(url, urlParser).then(

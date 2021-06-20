@@ -1,0 +1,11 @@
+.safe-zone {
+    color: #0f0;
+}
+
+.warning-zone {
+    color: #fa0;
+}
+
+.danger-zone {
+    color: #f00;
+}
