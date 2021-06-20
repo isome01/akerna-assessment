@@ -19,10 +19,14 @@ const BeverageList = ({className, style}) => {
       <h3>Beverages</h3>
       <ul className='list-group list-flush'>
         {beverages.toJS().map(beverage => {
-          const {name} = beverage
+          const {name, description} = beverage
           return (
             <li className='list-group-item' key={name}>
-              <b>{name}</b>
+              <b>{name}</b>  - {description}
+              <div className='float-right'>
+                <span className='fas fa-star' style={{color: '#cc0', marginRight: 5, cursor: 'pointer'}} />
+                <span className='fas fa-mug-hot' style={{color: '#290', marginRight: 5, cursor: 'pointer'}} />
+              </div>
             </li>
           )
         })}

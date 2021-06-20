@@ -5,15 +5,10 @@ const userSpecs = require('../../fixtures/userSpecs.json')
 const db_uri = 'caffeine_trip'
 const db_collection = 'user_specs'
 
+// simple previous date checker
+const isPastDate = date => date && new Date(date) < new Date()
+
 const dal = {}
-
-const checkDate = date => {
-  return (
-    (date && new Date(date) >= new Date())
-      ? 'future' : 'past'
-  )
-}
-
 
 dal.createSpecs = () => {
   return dbDriver(db_uri).then(
