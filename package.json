@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "immutable": "^4.0.0-rc.12",
+    "jquery": "^3.6.0",
     "mongodb": "^3.6.9",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",

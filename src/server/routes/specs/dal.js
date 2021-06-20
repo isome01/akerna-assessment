@@ -21,8 +21,9 @@ dal.createSpecs = () => {
       return db.collection(db_collection).insertOne({...userSpecs}).then(
         res => {
           if (res.insertedCount >= 1) {
-            console.log(`Specs with id "${res.ops[0]['_id']}" created for user.`)
-            return userSpecs
+            const specs = res.ops[0]
+            console.log(`Specs with id "${specs['_id']}" created for user.`)
+            return specs
           }
           return `Error: Specs not created.`
         }
@@ -46,9 +47,9 @@ dal.getSpecs = () => {
             console.log('User Specs not found; attempting to create specs...')
             return dal.createSpecs()
               .then(res => res)
-              .catch(res => res)
+              .catch(err => err)
           }
-          return res
+          return res[0]
         }
       ).catch(
         err => {throw new Error(err)}
