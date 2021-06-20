@@ -1,0 +1,13 @@
+{
+  "data": {
+    "favorites": [],
+    "consumed": {
+      "monster_ultra_sunrise": 0,
+      "black_coffee": 0,
+      "americano": 0,
+      "nos_sugar_free": 0,
+      "five_hour_energy": 0
+    }
+  },
+  "meta": "All user specifications and corresponding data."
+}
