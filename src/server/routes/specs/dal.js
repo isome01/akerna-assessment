@@ -55,4 +55,44 @@ dal.getSpecs = () => {
   )
 }
 
+dal.updateSpecs = specs => {
+  const id = specs._id
+  const {favorites, consumed} = specs
+
+  return dbDriver(db_uri).then(
+    db => {
+      db.collection(db_collection).findOne({
+        _id: ObjectId(id)
+      }).then(
+        res => {
+          if (res !== null) {
+            db.collection(db_collection).updateOne({
+              '_id': ObjectId(id)
+            }, {$set: {
+                'data': {favorites, consumed},
+              }}, {}).then(
+              result => {
+                const {matchedCount, modifiedCount} = result
+                if (!matchedCount || !modifiedCount) {
+                  console.log('Unable to update specs')
+                } else {
+                  console.log('Updated user specs.')
+                }
+                return {...userSpecs, ...specs}
+              },
+              err => err
+            ).catch(
+              err => {throw new Error(err)}
+            )
+          } else {
+            console.warn(`User Specs with id ${id} not found. Response ${res}`)
+          }
+        },
+      ).catch(
+        err => err
+      )
+    }
+  )
+}
+
 module.exports = dal

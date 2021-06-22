@@ -10,11 +10,11 @@ module.exports = function (app) {
       }
     )
   })
-  // update user favorites
-  app.post('/specs/favorites', function (req, res) {
-    res.json({'message': ''})
+  // update user specs
+  app.post('/specs', function (req, res) {
+    const specs = req.body.payload
+    dal.updateSpecs(specs).then(results => {
+      res.json(specs)
+    })
   })
-
-  // update consumed drinks for user specs
-  app.post('/specs/consumed')
 }

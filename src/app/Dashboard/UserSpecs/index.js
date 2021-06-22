@@ -1,40 +1,34 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import {Map, List, fromJS} from 'immutable'
-import {getUserSpecs} from '../../api/userSpecs'
+import {Map, List} from 'immutable'
 import * as styles from './UserSpecs.module.css'
 
-const UserSpecs = ({className, style}) => {
-  const [specs, setSpecs] = useState(Map())
-
-  useEffect(() => {
-    getUserSpecs()
-      .then((res) => {
-        setSpecs(fromJS(res))
-      })
-  }, [getUserSpecs, setSpecs])
-
-  const favorites = specs.get('favorites', List())
+const UserSpecs = ({className, style, specs, beverages}) => {
   const consumed = specs.get('consumed', Map()).toJS()
-  const drinkNames = Object.keys(consumed)
+
+  const drinkNames = beverages.toJS().map(b => b.name)
   let consumedTotal = 0
+  let mgTotal = 0
   drinkNames.forEach(name => {
-    consumedTotal += consumed[name]
+    const beverage = beverages.toJS().find(b => b['name'] === name)
+    const drinksConsumed = consumed[beverage['db_name']] || 0
+    consumedTotal += drinksConsumed
+    mgTotal += (consumed[beverage['db_name']] * (beverage['serving_size'] * beverage['caffeine']))
   })
+
+  const labelClass = mgTotal > 400 ? (
+    mgTotal < 500 ? styles['warning-zone'] : styles['danger-zone']
+  ) : 'text-primary'
 
   return (
     <div style={{width: '100%', ...style}} className={className}>
       <h3>My Specs</h3>
       <div style={{marginTop: 35}}>
-        <h4>Consumed Beverages:</h4>
+        <h5>Consumed Beverages:</h5>
         <div>Consumed Drinks Total:&nbsp;<span className='text-primary'>{consumedTotal}</span></div>
         <div>Caffeine consumption:&nbsp;
-          <span className={'text-primary'}>{consumedTotal} mg</span>
+          <span className={labelClass}>{mgTotal} mg</span>
         </div>
-      </div>
-      <div style={{marginTop: 35}}>
-        <h4>Favorites:</h4>
-        <ul>{favorites.map(favorite => favorite)}</ul>
       </div>
     </div>
   )
@@ -42,7 +36,9 @@ const UserSpecs = ({className, style}) => {
 
 UserSpecs.propTypes = {
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  specs: PropTypes.instanceOf(Map).isRequired,
+  beverages:  PropTypes.instanceOf(List).isRequired
 }
 
 UserSpecs.defaultProps = {
