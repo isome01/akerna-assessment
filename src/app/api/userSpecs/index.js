@@ -6,7 +6,11 @@ const getUserSpecs = () => ajax.get('/specs')
 const updateUserSpecs = specs => ajax.post('/specs', {payload: specs})
   .then(res => res.data || {})
 
+const refreshUserSpecs = id => ajax.post('/specs/refresh', {payload: id})
+  .then(res => res.data || {})
+
 export {
   getUserSpecs,
-  updateUserSpecs
+  updateUserSpecs,
+  refreshUserSpecs
 }

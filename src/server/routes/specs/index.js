@@ -10,11 +10,25 @@ module.exports = function (app) {
       }
     )
   })
+
   // update user specs
   app.post('/specs', function (req, res) {
-    const specs = req.body.payload
+    const specs = req.body['payload']
     dal.updateSpecs(specs).then(results => {
       res.json(specs)
     })
+  })
+
+  // basic refresh of data
+  app.post('/specs/refresh', function (req, res) {
+    const id = req.body['payload']
+    if (!id) {
+      console.error('Missing user specs "id"')
+      res.json({})
+    } else {
+      dal.updateSpecs({...userSpecs.data, _id: id}).then(results => {
+        res.json(results)
+      })
+    }
   })
 }

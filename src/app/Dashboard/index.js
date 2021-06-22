@@ -4,7 +4,7 @@ import UserSpecs from './UserSpecs'
 import * as styles from './Dashboard.module.css'
 import {fromJS, List, Map} from 'immutable'
 import {getBeverageData} from '../api/beverages'
-import {getUserSpecs, updateUserSpecs} from '../api/userSpecs'
+import {getUserSpecs, updateUserSpecs, refreshUserSpecs} from '../api/userSpecs'
 import Favorites from '../common/Favorites'
 
 const Dashboard = () => {
@@ -54,6 +54,17 @@ const Dashboard = () => {
       })
   }, [specs, beverages, id])
 
+  const onRefreshUserSpecs = useCallback(() => {
+    setLoading(true)
+    refreshUserSpecs(id)
+      .then(
+        res => {
+          setLoading(false)
+          setSpecs(fromJS(res))
+        }
+      )
+  }, [id, setSpecs, setLoading])
+
   useEffect(() => {
     getUserSpecs()
       .then((res) => {
@@ -85,13 +96,17 @@ const Dashboard = () => {
           className='col-md-12'
           specs={specs}
           beverages={beverages}
+          id={id}
+          onRefresh={onRefreshUserSpecs}
         />
-        <Favorites
-          className='col-md-4'
-          onDelete={onDeleteFavorite}
-          favorites={specs.get('favorites', List())}
-          style={{marginTop: 15}}
-        />
+        <div className='row'>
+          <Favorites
+            className='col-sm-4'
+            onDelete={onDeleteFavorite}
+            favorites={specs.get('favorites', List())}
+            style={{marginTop: 15}}
+          />
+        </div>
       </div>
     </div>
   )
